@@ -125,6 +125,8 @@ $(document).ready(function(){
 
 		console.log('word to reveal: '+ revealedWord)
 		console.log('---------GAME WORD UPDATED----------')
+
+		checkWinLoss();
 	}
 
 
@@ -151,7 +153,6 @@ $(document).ready(function(){
 
 	//check the input key to see whether or not to flip the appropriate letters in revealedArr
 	var checkGuess = function(key){
-		checkWinLoss();
 		console.log('+++++++++Checking the key: ' +key);
 		removeFromAlpha(key);
 		console.log(selectedWord)
@@ -175,7 +176,6 @@ $(document).ready(function(){
 		console.log('was a correct guess chosen? '+isCorrect)
 		console.log('+++++++++Checked the key')
 		updateGameWord();
-
 	}
 
 	var badLetter = function(key){
