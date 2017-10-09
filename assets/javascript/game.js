@@ -5,6 +5,7 @@ $(document).ready(function(){
 	var selectedWord = [];
 	var lettersGuessed = [];
 	var guessesRemaining;
+	var revealedWord = [];
 	var usedLetters = []; //list of used up, but useless, letters
 	var revealedArr = []; //boolean array, of what letters to show. All false to begin, then flip as guess are correct.
 
@@ -12,7 +13,7 @@ $(document).ready(function(){
 	//Set word lists, alphabet, game alphabet(alphabet - used letters)
 	var wordArr = ['arm','back','ears','eyes','face','feet','stomach','teeth','thumbs','toes','tongue','tooth','fingers','foot','hair','hands','head','knees','legs','mouth','neck','nose','shoulders','skin'];
 	var alphabetComplete = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
-	var alphabetGame = [];	
+	var alphabetGame = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];	
 
 
 	//Grab game element
@@ -36,7 +37,7 @@ $(document).ready(function(){
 		lettersGuessed = [];
 		usedLetters = [];
 		revealedArr = [];
-		alphabetGame = alphabetComplete;
+		alphabetGame = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
 		
 		setRandomWord()
 		updateGameHTML()
@@ -70,10 +71,16 @@ $(document).ready(function(){
 
 	}
 
+	var checkWinLoss = function(){
+		//win condition
+		if(revealedWord.join() === selectedWord.join()){
+			win();
+		}
 
-	//return true if 
-	var checkGuess = function(letter){
-
+		//lose condition
+		if (guessesRemaining === 0){
+			lose()
+		}
 
 	}
 
@@ -98,7 +105,7 @@ $(document).ready(function(){
 		console.log('---------UPDATING GAME WORD---------')
 
 		//Recreate the revealed word
-		var revealedWord =[]
+		revealedWord =[]
 
 		for (var i = 0; i < revealedArr.length; i++){
 			if (revealedArr[i] === false){
@@ -113,9 +120,7 @@ $(document).ready(function(){
 		gameWord.html('<h1>'+revealedWord+'</h1>')
 		// check for win condition
 		console.log('compare '+revealedWord+' with '+selectedWord);
-		if(revealedWord.join() === selectedWord.join()){
-			win();
-		}
+		
 
 
 		console.log('word to reveal: '+ revealedWord)
@@ -146,6 +151,7 @@ $(document).ready(function(){
 
 	//check the input key to see whether or not to flip the appropriate letters in revealedArr
 	var checkGuess = function(key){
+		checkWinLoss();
 		console.log('+++++++++Checking the key: ' +key);
 		removeFromAlpha(key);
 		console.log(selectedWord)
@@ -174,29 +180,21 @@ $(document).ready(function(){
 
 	var badLetter = function(key){
 		guessesRemaining--;
-
-		//lose condition
-		if (guessesRemaining === 0){
-			lose()
-		}
-		else{
-
-
-		//no lose, but bad key
 		lettersGuessed.push(key)
 		updateGameHTML();
-		}
+		
 
 	}
 
 	var lose = function(){
-		alert('YOU LOSE');
+		alert('YOU ARE A LOSER.');
 		resetGame();
 	}
 
 	var win = function(){
 		updateGameHTML();
-		alert('YOU WIN');
+		alert('YOU ARE A WINNER.');
+		winCount++;
 		resetGame();
 	}
 
